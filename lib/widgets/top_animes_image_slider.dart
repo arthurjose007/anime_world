@@ -1,4 +1,5 @@
 import 'package:animeworld/constants/app_colors.dart';
+import 'package:animeworld/screens/anime_details_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -29,6 +30,7 @@ class _TopAnimeImageSliderState extends State<TopAnimeImageSlider> {
             itemCount: widget.animes.length,
             itemBuilder: (context, index, realindex) {
               final anime = widget.animes.elementAt(index);
+
               return TopAnimePicture(anime: anime);
             },
             options: CarouselOptions(
@@ -39,7 +41,7 @@ class _TopAnimeImageSliderState extends State<TopAnimeImageSlider> {
                 });
               },
               aspectRatio: 16 / 9,
-              viewportFraction: 0.88,
+              viewportFraction: 0.50,
               autoPlay: true,
               enlargeCenterPage: true,
               initialPage: _currentPageIndex,
@@ -76,18 +78,20 @@ class TopAnimePicture extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>AnimeDetailsScreen(id:anime.node.id)));
+      },
       splashColor: Colors.white,
       child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: AspectRatio(
-            aspectRatio: 16 / 9,
-             child:Icon(Icons.person)
-            // Image.network(
-            //   anime.node.mainPicture.medium,
-            //   fit: BoxFit.cover,
-            // ),
-          )),
+        borderRadius: BorderRadius.circular(8),
+        child: AspectRatio(
+          aspectRatio: 10 / 9,
+          child: Image.network(
+            anime.node.mainPicture.medium,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
     );
   }
 }

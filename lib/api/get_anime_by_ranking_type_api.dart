@@ -30,6 +30,7 @@ Future<Iterable<Anime>> getAnimeByRankingTypeApi({
     // testList=animes;
     if (kDebugMode) {
       print(response.body);
+      print("this is debug");
     }
     print(response.body);
 

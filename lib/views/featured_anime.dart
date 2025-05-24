@@ -1,6 +1,7 @@
 import 'package:animeworld/api/get_anime_by_ranking_type_api.dart';
 import 'package:animeworld/core/screens/error_screen.dart';
 import 'package:animeworld/core/widgets/loader.dart';
+import 'package:animeworld/screens/view_all_anime_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/anime_tile.dart';
@@ -36,29 +37,38 @@ class FeaturedAnimes extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      TextButton(onPressed: (){}, child: Text("View All")),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => ViewAllAnimeScreen(
+                                    rankingType: rankingType, label: label)));
+                          },
+                          child: Text("View All")),
                     ],
                   ),
                 ),
                 SizedBox(
                   height: 350,
                   child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                      itemBuilder: (context,index){
-                        final anime=animes.elementAt(index);
-                        return AnimeTile(anime: anime.node,);
-                      }, separatorBuilder: (context,index){
-                        return const SizedBox(width: 10,);
-                  }, itemCount: animes!.length),
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        final anime = animes.elementAt(index);
+                        return AnimeTile(
+                          anime: anime.node,
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          width: 10,
+                        );
+                      },
+                      itemCount: animes!.length),
                 )
-
               ],
             );
           }
           return ErrorScreen(error: snapshot.error.toString());
         });
-  
-  
   }
 }

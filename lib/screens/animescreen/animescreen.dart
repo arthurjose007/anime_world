@@ -29,13 +29,64 @@ class _AnimeScreenState extends State<AnimeScreen> {
           ),
           //Top Animes
           Padding(
-            padding:Paddings.noBottomPadding,
+            padding: Paddings.noBottomPadding,
             child: Column(
               children: [
-                FeaturedAnimes(label: 'Top Ranked',rankingType: 'all',),
+                FeaturedAnimes(
+                  label: 'Top Ranked',
+                  rankingType: 'all',
+                ),
               ],
             ),
-          )
+          ),
+          //Top movie
+          Padding(
+            padding: Paddings.noBottomPadding,
+            child: Column(
+              children: [
+                FeaturedAnimes(
+                  label: 'Top Movie',
+                  rankingType: 'movie',
+                ),
+              ],
+            ),
+          ),
+          //Top Popularity
+          Padding(
+            padding: Paddings.noBottomPadding,
+            child: Column(
+              children: [
+                FeaturedAnimes(
+                  label: 'By Popularity',
+                  rankingType: 'bypopularity',
+                ),
+              ],
+            ),
+          ),
+          // Upcoming
+          Padding(
+            padding: Paddings.noBottomPadding,
+            child: Column(
+              children: [
+                FeaturedAnimes(
+                  label: 'Upcoming',
+                  rankingType: 'upcoming',
+                ),
+              ],
+            ),
+          ),
+          //Top Animes
+          Padding(
+            padding: Paddings.noBottomPadding,
+            child: Column(
+              children: [
+                FeaturedAnimes(
+                  label: 'Favorite',
+                  rankingType: 'favorite',
+                ),
+              ],
+            ),
+          ),
         ],
       )),
     );
