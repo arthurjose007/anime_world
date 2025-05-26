@@ -26,11 +26,13 @@ class AnimeTile extends StatelessWidget {
           const SizedBox(
             width: 5,
           ),
-          Text(
-            anime.title,
-            maxLines: 3,
-            style: TextStyles.mediumText,
-            overflow: TextOverflow.ellipsis,
+          Flexible(
+            child: Text(
+              anime.title,
+              maxLines: 3,
+              style: TextStyles.mediumText,
+              overflow: TextOverflow.ellipsis,
+            ),
           )
         ],
       ),

@@ -96,16 +96,16 @@ class AnimeDetails {
       status: json['status'],
       genres: List<Genre>.from(
         json['genres'].map(
-              (genre) => Genre.fromJson(genre),
+          (genre) => Genre.fromJson(genre),
         ),
       ),
       numEpisodes: json['num_episodes'],
       startSeason: json['start_season'] != null
           ? StartSeason.fromJson(json['start_season'])
           : const StartSeason(
-        year: 2000,
-        season: 'Unknown',
-      ),
+              year: 2000,
+              season: 'Unknown',
+            ),
       broadcast: json['broadcast'] != null
           ? Broadcast.fromJson(json['broadcast'])
           : null,
@@ -114,24 +114,24 @@ class AnimeDetails {
       rating: json['rating'],
       pictures: List<Picture>.from(
         json['pictures'].map(
-              (picture) => Picture.fromJson(picture),
+          (picture) => Picture.fromJson(picture),
         ),
       ),
       background: json['background'],
       relatedAnime: List<RelatedAnime>.from(
         json['related_anime'].map(
-              (anime) => RelatedAnime.fromJson(anime),
+          (anime) => RelatedAnime.fromJson(anime),
         ),
       ),
       relatedManga: json['related_manga'],
       recommendations: List<Recommendation>.from(
         json['recommendations'].map(
-              (rec) => Recommendation.fromJson(rec),
+          (rec) => Recommendation.fromJson(rec),
         ),
       ),
       studios: List<Studio>.from(
         json['studios'].map(
-              (studio) => Studio.fromJson(studio),
+          (studio) => Studio.fromJson(studio),
         ),
       ),
       statistics: Statistics.fromJson(

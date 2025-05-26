@@ -1,9 +1,8 @@
 import 'package:animeworld/constants/app_colors.dart';
-import 'package:animeworld/screens/anime_details_screen.dart';
+import 'package:animeworld/screens/animescreen/anime_details_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import '../models/anime.dart';
 
 class TopAnimeImageSlider extends StatefulWidget {

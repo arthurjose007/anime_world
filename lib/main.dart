@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animeworld/config/theme/app_theme.dart';
 import 'package:animeworld/myhttpoverrides/myhttpoverride.dart';
 import 'package:animeworld/screens/homescreen.dart';
 import 'package:animeworld/screens/test.dart';
@@ -16,7 +17,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
+      theme:AppTheme.lightTheme ,
+      darkTheme: AppTheme.darkTheme,
+      debugShowCheckedModeBanner: false,
       home: HomeScreen(),
     );
   }

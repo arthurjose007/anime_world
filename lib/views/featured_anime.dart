@@ -1,6 +1,7 @@
 import 'package:animeworld/api/get_anime_by_ranking_type_api.dart';
 import 'package:animeworld/core/screens/error_screen.dart';
 import 'package:animeworld/core/widgets/loader.dart';
+import 'package:animeworld/screens/animescreen/anime_details_screen.dart';
 import 'package:animeworld/screens/view_all_anime_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -54,8 +55,15 @@ class FeaturedAnimes extends StatelessWidget {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         final anime = animes.elementAt(index);
-                        return AnimeTile(
-                          anime: anime.node,
+                        return InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) =>
+                                    AnimeDetailsScreen(id: anime.node.id)));
+                          },
+                          child: AnimeTile(
+                            anime: anime.node,
+                          ),
                         );
                       },
                       separatorBuilder: (context, index) {
