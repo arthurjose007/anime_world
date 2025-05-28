@@ -1,3 +1,4 @@
+import 'package:animeworld/Cubits/anime_title_language.dart';
 import 'package:animeworld/api/get_anime_details_api.dart';
 import 'package:animeworld/common/extensions/extensions.dart';
 import 'package:animeworld/common/styles/paddings.dart';
@@ -12,6 +13,7 @@ import 'package:animeworld/widgets/networkimageview.dart';
 import 'package:animeworld/widgets/readmore_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AnimeDetailsScreen extends StatelessWidget {
   const AnimeDetailsScreen({super.key, required this.id});
@@ -111,8 +113,9 @@ class AnimeDetailsScreen extends StatelessWidget {
     required String name,
     required String englishName,
   }) =>
-      Builder(builder: (context) {
-        return Text(name,
+      BlocBuilder<AnimeTitleLanguageCubit, bool>(builder: (context, state) {
+        bool isEnglish = state;
+        return Text(isEnglish ? englishName : name,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w500,

@@ -1,5 +1,6 @@
 import 'package:animeworld/common/styles/paddings.dart';
 import 'package:animeworld/models/anime.dart';
+import 'package:animeworld/screens/animescreen/anime_details_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,9 @@ class AnimeListTaile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>AnimeDetailsScreen(id: anime.node.id)));
+      },
       child: Padding(
         padding: const EdgeInsets.only(bottom: 16),
         child: ClipRRect(

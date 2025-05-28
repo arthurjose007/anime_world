@@ -3,6 +3,7 @@ import 'package:animeworld/common/styles/paddings.dart';
 import 'package:animeworld/models/anime.dart';
 import 'package:animeworld/models/anime_node.dart';
 import 'package:animeworld/screens/animescreen/animescreen.dart';
+import 'package:animeworld/views/ranked%20_anime_list.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -58,32 +59,29 @@ class SearchScreen extends StatelessWidget {
     );
   }
 }
-
 class AnimeSearchDelegate extends SearchDelegate<List<AnimeNode>> {
-  Iterable<Anime> anime = [];
-  Future searchAnime(String query) async {
-    final animes = await getAnimeBySearchApi(query: query);
-    this.anime = animes.toList();
-  }
+  // Remove the animes field since we're using FutureBuilder
 
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: () {
-            query = '';
-          }),
+        icon: const Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
     ];
   }
 
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () {
-          close(context, []);
-        });
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, []);
+      },
+    );
   }
 
   @override
@@ -93,56 +91,55 @@ class AnimeSearchDelegate extends SearchDelegate<List<AnimeNode>> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    searchAnime(query);
     return _buildSearchResults(context);
   }
 
-  @override
   Widget _buildSearchResults(BuildContext context) {
-    if (query.isEmpty) {
+    if (query.isEmpty || query.length < 3) {
       return const Center(
-        child: Text("Enter search query"),
+        child: Text("Enter at least 3 characters to search"),
       );
-    } else {
-      return FutureBuilder<Iterable<Anime>>(
-          future: getAnimeBySearchApi(query: query),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasData) {
-              return Center(
-                child: Text('Error:${snapshot.error}'),
-              );
-            } else {
-              final animes = snapshot.data ?? [];
-              return ScarchResultsView(animes: animes);
-            }
-          });
     }
+
+    return FutureBuilder<Iterable<Anime>>(
+      future: getAnimeBySearchApi(query: query),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        }
+
+        final animes = snapshot.data ?? [];
+        if (animes.isEmpty) {
+          return const Center(child: Text("No results found"));
+        }
+
+        return SearchResultsView(animes: animes);
+      },
+    );
   }
 }
 
-class SearchResultView extends StatelessWidget {
-  const SearchResultView({super.key, required this.animes});
+class SearchResultsView extends StatelessWidget {
+  const SearchResultsView({super.key, required this.animes});
   final Iterable<Anime> animes;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: Paddings.defaultPadding,
       child: ListView.builder(
-          itemCount: animes.length, itemBuilder: (context, index) {}),
+        itemCount: animes.length,
+        itemBuilder: (context, index) {
+          final anime = animes.elementAt(index);//[index];
+          return AnimeListTaile(anime: anime);
+        },
+      ),
     );
-  }
-}
-
-class ScarchResultsView extends StatelessWidget {
-  const ScarchResultsView({super.key, required this.animes});
-  final Iterable<Anime> animes;
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }

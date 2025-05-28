@@ -1,7 +1,9 @@
 import 'package:animeworld/screens/searchscreen/search_screen.dart';
+import 'package:animeworld/screens/settingScreen/settingscreen.dart';
 import 'package:flutter/material.dart';
 
 import 'animescreen/animescreen.dart';
+import 'categoryScreen/categoryscreen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, this.index});
@@ -31,12 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = const [
     AnimeScreen(),
     SearchScreen(),
-    Center(
-      child: Text('Categories Screen'),
-    ),
-    Center(
-      child: Text('Settings Screen'),
-    ),
+    CategoryScreen(),
+    SettingScreen(),
   ];
 
   @override
