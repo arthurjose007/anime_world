@@ -1,13 +1,13 @@
 import 'dart:io';
-
-import 'package:animeworld/Cubits/anime_title_language.dart';
-import 'package:animeworld/Cubits/theme_cubit.dart';
-import 'package:animeworld/config/theme/app_theme.dart';
-import 'package:animeworld/myhttpoverrides/myhttpoverride.dart';
-import 'package:animeworld/screens/homescreen.dart';
-import 'package:animeworld/screens/test.dart';
+import 'package:animeworld/core/helpers/config/theme/app_theme.dart';
+import 'package:animeworld/core/helpers/myhttpoverrides/myhttpoverride.dart';
+import 'package:animeworld/features/screens/HomeScreen/homescreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+
+import 'core/helpers/English&japname/anime_title_language.dart';
+import 'core/helpers/English&japname/theme_cubit.dart';
+import 'features/screens/animescreen/rankingtype/home_controller.dart';
 
 void main() async {
   HttpOverrides.global = MyHttpOverrides();
@@ -19,21 +19,23 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiProvider(
       providers: [
-        BlocProvider(create: (context) => ThemeCubit()),
-        BlocProvider(create: (context) => AnimeTitleLanguageCubit()),
+        ChangeNotifierProvider(create: (_) => HomeProvider()),
+        ChangeNotifierProvider(create: (_) => AnimeTitleLanguageProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
-      child: BlocBuilder<ThemeCubit, ThemeMode>(builder: (context, state) {
-        final themeMode = state;
-        return MaterialApp(
-          themeMode: themeMode,
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          debugShowCheckedModeBanner: false,
-          home: HomeScreen(),
-        );
-      }),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            themeMode: themeProvider.themeMode,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            debugShowCheckedModeBanner: false,
+            home: const HomeScreen(),
+          );
+        },
+      ),
     );
   }
 }

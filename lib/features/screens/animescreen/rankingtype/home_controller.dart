@@ -67,7 +67,7 @@ class HomeProvider extends ChangeNotifier {
   String? getError(String rankingType) => _errors[rankingType];
   bool isLoading(String rankingType) => _loadingStates[rankingType] ?? false;
 
-  Future<void> employeeDetails({required int limit, required String rankingType}) async {
+  Future<void> rankingDetails({required int limit, required String rankingType}) async {
     // Skip if already loading this ranking type
     if (_loadingStates[rankingType] == true) return;
 
