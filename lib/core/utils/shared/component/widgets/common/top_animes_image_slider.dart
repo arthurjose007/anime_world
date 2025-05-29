@@ -21,36 +21,39 @@ class _TopAnimeImageSliderState extends State<TopAnimeImageSlider> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 290,
+      height: 298,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-         const Row(children: [Padding(
-           padding: EdgeInsets.only(left: 10.0),
-           child: Text('Employee Details',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w700),),
-         ),],),
+          Row(children: [Padding(
+            padding: EdgeInsets.only(left: 10.0),
+            child: Text('Employee Details',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w700),),
+          ),],),
           const SizedBox(height: 5,),
-          CarouselSlider.builder(
-            carouselController: _controller,
-            itemCount: widget.animes.length,
-            itemBuilder: (context, index, realindex) {
-              final anime = widget.animes.elementAt(index);
-              
-
-              return TopAnimePicture(anime: anime);
-            },
-            options: CarouselOptions(
-              enlargeFactor: 0.22,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _currentPageIndex = index;
-                });
+          Flexible(
+            flex: 10,
+            child: CarouselSlider.builder(
+              carouselController: _controller,
+              itemCount: widget.animes.length,
+              itemBuilder: (context, index, realindex) {
+                final anime = widget.animes.elementAt(index);
+                
+            
+                return TopAnimePicture(anime: anime);
               },
-              aspectRatio: 16 / 9,
-              viewportFraction: 0.50,
-              autoPlay: true,
-              enlargeCenterPage: true,
-              initialPage: _currentPageIndex,
+              options: CarouselOptions(
+                enlargeFactor: 0.22,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _currentPageIndex = index;
+                  });
+                },
+                aspectRatio: 16 / 9,
+                viewportFraction: 0.50,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                initialPage: _currentPageIndex,
+              ),
             ),
           ),
           const SizedBox(
