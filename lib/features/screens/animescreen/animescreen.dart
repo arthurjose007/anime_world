@@ -3,6 +3,7 @@ import 'package:animeworld/core/utils/shared/component/widgets/common/top_anime_
 import 'package:animeworld/features/screens/searchscreen/search_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/helpers/api/get_seasonal_anime_api.dart';
 import '../../../core/utils/shared/component/widgets/views/featured_anime.dart';
 
 class AnimeScreen extends StatelessWidget {

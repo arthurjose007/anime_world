@@ -17,6 +17,84 @@ import '../../../core/utils/shared/component/widgets/common/networkimageview.dar
 import '../../../core/utils/shared/component/widgets/error_screen.dart';
 import '../../../core/utils/shared/component/widgets/loader.dart';
 
+// class AnimeDetailsScreen extends StatelessWidget {
+//   const AnimeDetailsScreen({super.key, required this.id});
+//
+//   final int id;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return FutureBuilder(
+//         future: getAnimeDetailsApi(id: id),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return const Loader();
+//           }
+//           if (snapshot.data != null) {
+//             final anime = snapshot.data;
+//             print(anime);
+//             return Scaffold(
+//               body: SingleChildScrollView(
+//                 child: Column(children: [
+//                   //Top Image
+//                   _buildAnimeImageWidget(imageUrl: anime!.mainPicture.large),
+//                   Padding(
+//                     padding: Paddings.defaultPadding,
+//                     child: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         _buildAnimeTitle(
+//                             name: anime.title,
+//                             englishName: anime.alternativeTitles.en),
+//                         SizedBox(
+//                           height: 20,
+//                         ),
+//                         //Description
+//                         ReadMoreText(longText: anime.synopsis),
+//                         SizedBox(
+//                           height: 10,
+//                         ),
+//                         //Anime Info
+//                         _buildAnimeInfo(anime: anime),
+//                         //Anime Background
+//                         anime.background.isNotEmpty
+//                             ? _buildAnimeBackground(
+//                                 background: anime.background)
+//                             : const SizedBox.shrink(),
+//                         //Image Gallery
+//                         _buildImageGallery(image: anime.pictures),
+//                         const SizedBox(
+//                           height: 20,
+//                         ),
+//                         SimilarAnimeView(
+//                             animes: anime.relatedAnime
+//                                 .map((relatedanime) => relatedanime.node)
+//                                 .toList(),
+//                             label: "Releated Anime"),
+//                         const SizedBox(
+//                           height: 20,
+//                         ),
+//                         SimilarAnimeView(
+//                             animes: anime.recommendations
+//                                 .map((animerec) => animerec.node)
+//                                 .toList(),
+//                             label: "Recommendations"),
+//                       ],
+//                     ),
+//                   ),
+//                 ]),
+//               ),
+//             );
+//           }
+//
+//           return ErrorScreen(error: snapshot.error.toString());
+//         });
+//   }
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'detailedController/detailedresponseController.dart';
+
 class AnimeDetailsScreen extends StatelessWidget {
   const AnimeDetailsScreen({super.key, required this.id});
 
@@ -24,72 +102,70 @@ class AnimeDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: getAnimeDetailsApi(id: id),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+    if(id!=null) {
+      final provider = Provider.of<DetailedProvider>(context, listen: false).getAnimeDetailsApidata(id:id);
+    }
+    return Scaffold(
+      body: Consumer<DetailedProvider>(
+        builder: (context, provider, child) {
+          // Handle loading state
+          if (provider.isLoading) {
             return const Loader();
           }
-          if (snapshot.data != null) {
-            final anime = snapshot.data;
-            print(anime);
-            return Scaffold(
-              body: SingleChildScrollView(
-                child: Column(children: [
-                  //Top Image
-                  _buildAnimeImageWidget(imageUrl: anime!.mainPicture.large),
-                  Padding(
-                    padding: Paddings.defaultPadding,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildAnimeTitle(
-                            name: anime.title,
-                            englishName: anime.alternativeTitles.en),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        //Description
-                        ReadMoreText(longText: anime.synopsis),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        //Anime Info
-                        _buildAnimeInfo(anime: anime),
-                        //Anime Background
-                        anime.background.isNotEmpty
-                            ? _buildAnimeBackground(
-                                background: anime.background)
-                            : const SizedBox.shrink(),
-                        //Image Gallery
-                        _buildImageGallery(image: anime.pictures),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        SimilarAnimeView(
-                            animes: anime.relatedAnime
-                                .map((relatedanime) => relatedanime.node)
-                                .toList(),
-                            label: "Releated Anime"),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        SimilarAnimeView(
-                            animes: anime.recommendations
-                                .map((animerec) => animerec.node)
-                                .toList(),
-                            label: "Recommendations"),
-                      ],
-                    ),
-                  ),
-                ]),
-              ),
-            );
+
+          // Handle error state
+          if (provider.error != null) {
+            return ErrorScreen(error: provider.error!);
           }
 
-          return ErrorScreen(error: snapshot.error.toString());
-        });
+          // Handle no data state
+          if (provider.animeDetails == null) {
+            return const ErrorScreen(error: 'No anime details available');
+          }
+
+          final anime = provider.animeDetails!;
+
+          return SingleChildScrollView(
+            child: Column(children: [
+              _buildAnimeImageWidget(imageUrl: anime.mainPicture.large),
+              Padding(
+                padding: Paddings.defaultPadding,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildAnimeTitle(
+                        name: anime.title,
+                        englishName: anime.alternativeTitles.en),
+                    const SizedBox(height: 20),
+                    ReadMoreText(longText: anime.synopsis),
+                    const SizedBox(height: 10),
+                    _buildAnimeInfo(anime: anime),
+                    anime.background.isNotEmpty
+                        ? _buildAnimeBackground(background: anime.background)
+                        : const SizedBox.shrink(),
+                    _buildImageGallery(image: anime.pictures),
+                    const SizedBox(height: 20),
+                    SimilarAnimeView(
+                        animes: anime.relatedAnime
+                            .map((relatedanime) => relatedanime.node)
+                            .toList(),
+                        label: "Related Anime"),
+                    const SizedBox(height: 20),
+                    SimilarAnimeView(
+                        animes: anime.recommendations
+                            .map((animerec) => animerec.node)
+                            .toList(),
+                        label: "Recommendations"),
+                  ],
+                ),
+              ),
+            ]),
+          );
+        },
+      ),
+    );
   }
+
 
   _buildAnimeImageWidget({required String imageUrl}) => Stack(
         children: [

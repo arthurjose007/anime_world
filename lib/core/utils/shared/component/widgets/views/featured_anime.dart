@@ -96,7 +96,6 @@ class FeaturedAnimes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final provider = Provider.of<HomeProvider>(context, listen: false);
 
     // // Initialize data if not already loaded
 

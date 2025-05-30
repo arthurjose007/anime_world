@@ -4,9 +4,12 @@ import 'package:animeworld/core/helpers/models/anime_node.dart';
 import 'package:animeworld/features/screens/animescreen/animescreen.dart';
 import 'package:animeworld/core/utils/shared/component/widgets/views/ranked%20_anime_list.dart';
 import 'package:animeworld/features/screens/HomeScreen/homescreen.dart';
+import 'package:animeworld/features/screens/searchscreen/searchController/searchController.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../core/utils/config/style/paddings.dart';
+import '../../../core/utils/shared/component/widgets/loader.dart';
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
@@ -113,33 +116,26 @@ class AnimeSearchDelegate extends SearchDelegate<List<AnimeNode>> {
   Widget buildSuggestions(BuildContext context) {
     return _buildSearchResults(context);
   }
-
+  
   Widget _buildSearchResults(BuildContext context) {
+    final provider = Provider.of<SearchProvider>(context, listen: false);
+
     if (query.isEmpty || query.length < 3) {
-      return const Center(
-        child: Text("Enter at least 3 characters to search"),
-      );
+      return const Center(child: Text("Enter at least 3 characters to search"));
     }
 
-    return FutureBuilder<Iterable<Anime>>(
-      future: getAnimeBySearchApi(query: query),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    // Trigger search after build completes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      provider.searchapi(query: query);
+    });
 
-        if (snapshot.hasError) {
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
-          );
-        }
+    return Consumer<SearchProvider>(
+      builder: (context, provider, child) {
+        if (provider.isLoading) return const Loader();
+        if (provider.error != null) return Center(child: Text(provider.error!));
+        if (provider.searchlist.isEmpty) return const Center(child: Text("No results found"));
 
-        final animes = snapshot.data ?? [];
-        if (animes.isEmpty) {
-          return const Center(child: Text("No results found"));
-        }
-
-        return SearchResultsView(animes: animes);
+        return SearchResultsView(animes: provider.searchlist);
       },
     );
   }

@@ -7,7 +7,9 @@ import 'package:provider/provider.dart';
 
 import 'core/helpers/English&japname/anime_title_language.dart';
 import 'core/helpers/English&japname/theme_cubit.dart';
+import 'features/screens/animescreen/detailedController/detailedresponseController.dart';
 import 'features/screens/animescreen/rankingtype/home_controller.dart';
+import 'features/screens/searchscreen/searchController/searchController.dart';
 
 void main() async {
   HttpOverrides.global = MyHttpOverrides();
@@ -24,6 +26,8 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => HomeProvider()),
         ChangeNotifierProvider(create: (_) => AnimeTitleLanguageProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
+        ChangeNotifierProvider(create: (_) => DetailedProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
