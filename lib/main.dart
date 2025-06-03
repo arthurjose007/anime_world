@@ -42,4 +42,5 @@ class MainApp extends StatelessWidget {
       ),
     );
   }
+  //flutter version is 3.16.5
 }

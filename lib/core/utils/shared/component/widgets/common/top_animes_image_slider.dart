@@ -1,7 +1,8 @@
+import 'package:animeworld/core/utils/shared/component/widgets/common/top_anime_picture.dart';
 import 'package:animeworld/core/utils/shared/constants/app_colors.dart';
 import 'package:animeworld/features/screens/animescreen/anime_details_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../../../helpers/models/anime.dart';
@@ -16,7 +17,7 @@ class TopAnimeImageSlider extends StatefulWidget {
 
 class _TopAnimeImageSliderState extends State<TopAnimeImageSlider> {
   int _currentPageIndex = 0;
-  final CarouselController _controller = CarouselController();
+  final CarouselController _controller =CarouselController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +26,14 @@ class _TopAnimeImageSliderState extends State<TopAnimeImageSlider> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Row(children: [Padding(
+       const   Row(children: [Padding(
             padding: EdgeInsets.only(left: 10.0),
             child: Text('Employee Details',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w700),),
           ),],),
           const SizedBox(height: 5,),
           Flexible(
             flex: 10,
-            child: CarouselSlider.builder(
+            child:CarouselSlider.builder(
               carouselController: _controller,
               itemCount: widget.animes.length,
               itemBuilder: (context, index, realindex) {
@@ -81,26 +82,3 @@ class _TopAnimeImageSliderState extends State<TopAnimeImageSlider> {
   }
 }
 
-class TopAnimePicture extends StatelessWidget {
-  const TopAnimePicture({super.key, required this.anime});
-  final Anime anime;
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (_)=>AnimeDetailsScreen(id:anime.node.id)));
-      },
-      splashColor: Colors.white,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: AspectRatio(
-          aspectRatio: 10 / 9,
-          child: Image.network(
-            anime.node.mainPicture.medium,
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    );
-  }
-}
